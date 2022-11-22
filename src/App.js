@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import {useState, useEffect} from "react"
+import ChuckSays from "./components/ChuckSays";
 import './App.css';
 
 function App() {
+  const [quoteData, setQuoteData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    fetch("https://api.chucknorris.io/jokes/random")
+    .then(response => response.json())
+    .then(data => setQuoteData(data))
+  },[refresh]);
+  
+  function handleClick() {
+    setRefresh(!refresh)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Random CHUCK NORRIS Quotes</h1>
       </header>
+      <button onClick={handleClick}>click me</button>
+        <ChuckSays quoteData={quoteData.value}/>
+        
     </div>
   );
 }
